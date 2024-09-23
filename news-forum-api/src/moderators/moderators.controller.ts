@@ -1,7 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ModeratorsService } from './moderators.service';
 import { CreateModeratorDto } from './dto/create-moderator.dto';
-import { UpdateModeratorDto } from './dto/update-moderator.dto';
 
 @Controller('moderators')
 export class ModeratorsController {
@@ -19,16 +26,19 @@ export class ModeratorsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.moderatorsService.findOne(+id);
+    return this.moderatorsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateModeratorDto: UpdateModeratorDto) {
-    return this.moderatorsService.update(+id, updateModeratorDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateModeratorDto: CreateModeratorDto,
+  ) {
+    return this.moderatorsService.update(id, updateModeratorDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.moderatorsService.remove(+id);
+    return this.moderatorsService.remove(id);
   }
 }

@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
+import { Moderator } from './entities/moderator.entity';
+import { hash } from 'bcrypt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateModeratorDto } from './dto/create-moderator.dto';
 import { UpdateModeratorDto } from './dto/update-moderator.dto';
 
 @Injectable()
 export class ModeratorsService {
-  create(createModeratorDto: CreateModeratorDto) {
-    return 'This action adds a new moderator';
+  constructor(
+    @InjectRepository(Moderator)
+    private readonly moderatorRepository: Repository<Moderator>,
+  ) {}
+
+  async create(createModeratorDto: CreateModeratorDto): Promise<Moderator> {
+    const moderator: Moderator = { id: undefined, ...createModeratorDto };
+    moderator.password = await hash(createModeratorDto.password, 10);
+    return await this.moderatorRepository.save(moderator);
   }
 
-  findAll() {
-    return `This action returns all moderators`;
+  async findAll(): Promise<Moderator[]> {
+    return await this.moderatorRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} moderator`;
+  async findOne(id: string): Promise<Moderator> {
+    return await this.moderatorRepository.findOneBy({ id });
   }
 
-  update(id: number, updateModeratorDto: UpdateModeratorDto) {
-    return `This action updates a #${id} moderator`;
+  async update(
+    id: string,
+    updateModeratorDto: UpdateModeratorDto,
+  ): Promise<Moderator> {
+    return await this.moderatorRepository.save({ id, ...updateModeratorDto });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} moderator`;
+  async remove(id: string) {
+    return await this.moderatorRepository.delete(id);
   }
 }
