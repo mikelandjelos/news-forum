@@ -9,4 +9,9 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('ping')
+  async getPing(): Promise<string> {
+    return await this.appService.getPing();
+  }
 }
