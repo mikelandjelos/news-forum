@@ -1,1 +1,40 @@
-<p>sign-up works!</p>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+<div class="flex-container">
+  <form class="container" [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+    <h1>Sign Up</h1>
+    <div *ngIf="errMsg.length > 0">
+      <span *ngFor="let msg of errMsg">{{ msg }} <br /></span>
+    </div>
+
+    <input type="text" placeholder="First Name" formControlName="firstName" />
+    <input type="text" placeholder="Last Name" formControlName="lastName" />
+    <input type="text" placeholder="Username" formControlName="username" />
+    <input type="password" placeholder="Password" formControlName="password" />
+    <input
+      type="password"
+      placeholder="Repeat password"
+      formControlName="repeatPassword"
+    />
+    <input type="email" placeholder="Email" formControlName="email" />
+    <input type="number" placeholder="Age" formControlName="age" min="0" />
+
+   <div class="gender-options">
+      <label>
+        <input type="radio" formControlName="gender" value="m" />
+        Male
+      </label>
+      <label>
+        <input type="radio" formControlName="gender" value="f" />
+        Female
+      </label>
+    </div>
+
+    <button type="submit">Submit</button>
+    <p [routerLink]="['/sign-in']" routerLinkActive="router-link-active">
+      Already have a profile? Sign in!
+    </p>
+  </form>
+</div>

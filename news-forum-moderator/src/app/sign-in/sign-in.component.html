@@ -3,7 +3,7 @@
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
 />
 <div class="flex-container">
-  <form class="container" [formGroup]="loginForm">
+  <form class="container" [formGroup]="signInForm">
     <h1>Log In</h1>
     <div *ngIf="errMsg.length > 0">
       <span *ngFor="let msg of errMsg">{{ msg }} <br /></span>

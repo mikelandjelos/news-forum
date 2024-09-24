@@ -6,9 +6,11 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { ModeratorsService } from './moderators.service';
 import { CreateModeratorDto } from './dto/create-moderator.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('moderators')
 export class ModeratorsController {
@@ -24,6 +26,7 @@ export class ModeratorsController {
     return await this.moderatorsService.findAll();
   }
 
+  @UseGuards(AuthGuard)
   @Get('id/:id')
   async findOneById(@Param('id') id: string) {
     return await this.moderatorsService.findOneById(id);
@@ -34,6 +37,7 @@ export class ModeratorsController {
     return await this.moderatorsService.findOneByUsername(username);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -42,6 +46,7 @@ export class ModeratorsController {
     return await this.moderatorsService.update(id, updateModeratorDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.moderatorsService.remove(id);

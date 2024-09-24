@@ -41,7 +41,7 @@ const Error = {
 export class SignInComponent implements OnInit, OnDestroy {
   errMsg: string[] = [];
 
-  loginForm!: FormGroup;
+  signInForm!: FormGroup;
 
   onDestroy$ = new Subject<void>();
 
@@ -61,28 +61,28 @@ export class SignInComponent implements OnInit, OnDestroy {
   }
 
   buildForm() {
-    this.loginForm = new FormGroup({
+    this.signInForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
     });
   }
 
   onSubmit() {
-    if (!this.loginForm.valid) {
+    if (!this.signInForm.valid) {
       this.errMsg = [];
 
-      if (!this.loginForm.get('username')?.valid) {
+      if (!this.signInForm.get('username')?.valid) {
         this.errMsg.push(Error.username.pattern);
       }
 
-      if (!this.loginForm.get('password')?.valid) {
+      if (!this.signInForm.get('password')?.valid) {
         this.errMsg.push(Error.password.pattern);
       }
     } else {
       this.errMsg = [];
-      const { username, password } = this.loginForm.value;
+      const { username, password } = this.signInForm.value;
 
-      this.loginForm.reset();
+      this.signInForm.reset();
 
       this.moderatorService
         .signIn(username, password)
@@ -94,7 +94,7 @@ export class SignInComponent implements OnInit, OnDestroy {
               'Success'
             );
             console.log("this.router.navigate(['moderator-dashboard']);");
-            // this.router.navigate(['moderator-dashboard']);
+            this.router.navigate(['moderator-dashboard']);
           },
           (err) => {
             const { message, error, statusCode } = err.error;
