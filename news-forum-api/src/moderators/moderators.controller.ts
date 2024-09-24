@@ -15,30 +15,35 @@ export class ModeratorsController {
   constructor(private readonly moderatorsService: ModeratorsService) {}
 
   @Post()
-  create(@Body() createModeratorDto: CreateModeratorDto) {
-    return this.moderatorsService.create(createModeratorDto);
+  async create(@Body() createModeratorDto: CreateModeratorDto) {
+    return await this.moderatorsService.create(createModeratorDto);
   }
 
   @Get()
-  findAll() {
-    return this.moderatorsService.findAll();
+  async findAll() {
+    return await this.moderatorsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.moderatorsService.findOne(id);
+  @Get('id/:id')
+  async findOneById(@Param('id') id: string) {
+    return await this.moderatorsService.findOneById(id);
+  }
+
+  @Get('/username/:username')
+  async findOneByUsername(@Param('username') username: string) {
+    return await this.moderatorsService.findOneByUsername(username);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateModeratorDto: CreateModeratorDto,
   ) {
-    return this.moderatorsService.update(id, updateModeratorDto);
+    return await this.moderatorsService.update(id, updateModeratorDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.moderatorsService.remove(id);
+  async remove(@Param('id') id: string) {
+    return await this.moderatorsService.remove(id);
   }
 }

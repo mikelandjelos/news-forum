@@ -82,25 +82,26 @@ export class SignInComponent implements OnInit, OnDestroy {
       this.errMsg = [];
       const { username, password } = this.loginForm.value;
 
-      console.log(`User: ${username}, Pass: ${password}`);
-      this.toastr.success(`User: ${username}, Pass: ${password}`, 'Success!');
+      this.loginForm.reset();
 
       this.moderatorService
         .signIn(username, password)
         .pipe(takeUntil(this.onDestroy$))
-        .subscribe((data) => {
-          console.log(data);
-
-          if (data.success) {
-            sessionStorage.setItem('moderator', JSON.stringify(data.moderator));
-            this.toastr.success(data.message, 'Success');
-            this.router.navigate(['moderator-dashboard']);
-          } else {
-            this.toastr.error(data.message, 'Error');
+        .subscribe(
+          ({ exp, iat, ...moderator }) => {
+            this.toastr.success(
+              `Welcome ${moderator.firstName} ${moderator.lastName} (${moderator.username})!`,
+              'Success'
+            );
+            console.log("this.router.navigate(['moderator-dashboard']);");
+            // this.router.navigate(['moderator-dashboard']);
+          },
+          (err) => {
+            const { message, error, statusCode } = err.error;
+            this.toastr.error(message, 'Error');
+            console.log(`Error: "${error}"; StatusCode: ${statusCode}`);
           }
-
-          this.loginForm.reset();
-        });
+        );
     }
   }
 }

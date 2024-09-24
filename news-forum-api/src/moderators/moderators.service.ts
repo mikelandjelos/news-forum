@@ -23,8 +23,12 @@ export class ModeratorsService {
     return await this.moderatorRepository.find();
   }
 
-  async findOne(id: string): Promise<Moderator> {
+  async findOneById(id: string): Promise<Moderator> {
     return await this.moderatorRepository.findOneBy({ id });
+  }
+
+  async findOneByUsername(username: string) {
+    return await this.moderatorRepository.findOneBy({ username });
   }
 
   async update(
