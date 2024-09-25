@@ -101,8 +101,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
       this.errMsg = [];
       const { repeatPassword, ...moderator } = this.signUpForm.value;
 
-      console.log(moderator);
-
       this.moderatorService
         .create(moderator)
         .pipe(takeUntil(this.onDestroy$))

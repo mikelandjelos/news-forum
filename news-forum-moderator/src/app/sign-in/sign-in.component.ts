@@ -83,14 +83,9 @@ export class SignInComponent implements OnInit, OnDestroy {
       this.signInForm.reset();
 
       this.authService
-        .signIn(username, password, 60)
+        .signIn(username, password, 7 * 24 * 60 * 60)
         .pipe(
           takeUntil(this.onDestroy$),
-          tap(({ accessToken, expiresIn }) =>
-            console.log(
-              `SignInComponent:\n\tAccessToken: ${accessToken}\n\tExpiresIn: ${expiresIn}`
-            )
-          ),
           switchMap(({ accessToken, expiresIn }) =>
             this.authService.getProfile()
           )

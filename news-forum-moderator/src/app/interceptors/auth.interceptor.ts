@@ -11,9 +11,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const toastrService = inject(ToastrService);
 
-  console.log(req);
-  console.log(`Interceptor has token: ${authToken}`);
-
   if (authToken)
     req = req.clone({
       headers: req.headers.set('Authorization', `Bearer ${authToken}`),

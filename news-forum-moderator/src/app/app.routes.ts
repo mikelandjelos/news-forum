@@ -22,5 +22,5 @@ export const routes: Routes = [
       { path: '', redirectTo: 'profile-page', pathMatch: 'full' },
     ],
   },
-  { path: '', pathMatch: 'full', redirectTo: 'sign-in' },
+  { path: '', pathMatch: 'full', redirectTo: 'moderator-hub' },
 ];
