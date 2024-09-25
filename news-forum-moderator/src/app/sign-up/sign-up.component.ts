@@ -11,8 +11,6 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { HttpClientModule } from '@angular/common/http';
-import { Moderator } from '../models/moderator.model';
 
 const Error = {
   username: { pattern: 'Username required' },
@@ -32,7 +30,6 @@ const Error = {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
     RouterLink,
   ],
   templateUrl: './sign-up.component.html',
@@ -107,7 +104,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       console.log(moderator);
 
       this.moderatorService
-        .signUp(moderator)
+        .create(moderator)
         .pipe(takeUntil(this.onDestroy$))
         .subscribe((moderator) => {
           this.toastr.success(

@@ -7,11 +7,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ModeratorService } from '../services/moderator.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { Router, RouterLink } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../services/auth.service';
 
 const Error = {
   username: {
@@ -30,13 +29,12 @@ const Error = {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
     RouterLink,
     ToastrModule,
   ],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.scss',
-  providers: [ModeratorService],
+  providers: [AuthService],
 })
 export class SignInComponent implements OnInit, OnDestroy {
   errMsg: string[] = [];
@@ -46,7 +44,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   onDestroy$ = new Subject<void>();
 
   constructor(
-    private moderatorService: ModeratorService,
+    private authService: AuthService,
     private toastr: ToastrService,
     private router: Router
   ) {}
@@ -84,17 +82,26 @@ export class SignInComponent implements OnInit, OnDestroy {
 
       this.signInForm.reset();
 
-      this.moderatorService
-        .signIn(username, password)
-        .pipe(takeUntil(this.onDestroy$))
+      this.authService
+        .signIn(username, password, 60)
+        .pipe(
+          takeUntil(this.onDestroy$),
+          tap(({ accessToken, expiresIn }) =>
+            console.log(
+              `SignInComponent:\n\tAccessToken: ${accessToken}\n\tExpiresIn: ${expiresIn}`
+            )
+          ),
+          switchMap(({ accessToken, expiresIn }) =>
+            this.authService.getProfile()
+          )
+        )
         .subscribe(
           ({ exp, iat, ...moderator }) => {
             this.toastr.success(
               `Welcome ${moderator.firstName} ${moderator.lastName} (${moderator.username})!`,
               'Success'
             );
-            console.log("this.router.navigate(['moderator-dashboard']);");
-            this.router.navigate(['moderator-dashboard']);
+            this.router.navigate(['moderator-hub']);
           },
           (err) => {
             const { message, error, statusCode } = err.error;
