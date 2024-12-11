@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
+import { BlacklistingService } from 'src/miscellaneous/blacklist.service';
 import { Moderator } from 'src/moderators/entities/moderator.entity';
 import { ModeratorsService } from 'src/moderators/moderators.service';
 
@@ -11,6 +12,7 @@ export class AuthService {
   constructor(
     private readonly moderatorsService: ModeratorsService,
     private readonly jwtService: JwtService,
+    private readonly blacklistingService: BlacklistingService,
   ) {}
 
   async signIn(
@@ -33,13 +35,22 @@ export class AuthService {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...payload } = moderator;
 
-    console.log(expiresIn);
-
     return {
       accessToken: await this.jwtService.signAsync(payload, {
         expiresIn: expiresIn,
       }),
       expiresIn,
     };
+  }
+
+  async signOut(token: string, tokenExpirationTimestamp: number) {
+    const currentTime = Math.floor(Date.now() / 1000);
+    const ttl = tokenExpirationTimestamp - currentTime;
+
+    if (ttl < 0) {
+      throw new BadRequestException(`Expiration time can be negative (${ttl})`);
+    }
+
+    this.blacklistingService.blacklistToken(token, ttl);
   }
 }

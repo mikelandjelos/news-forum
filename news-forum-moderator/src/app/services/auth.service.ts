@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, shareReplay, tap } from 'rxjs';
 import { environment } from '../../environments/environment.development';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Moderator } from '../models/moderator.model';
-
-export type Seconds = number;
+import { Seconds } from '../models/global-types';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +37,7 @@ export class AuthService {
             path: '/',
           });
         }),
-        shareReplay()
+        shareReplay(1)
       );
   }
 
@@ -48,15 +47,16 @@ export class AuthService {
     );
   }
 
-  isSignedIn(): boolean {
-    return this.cookieService.check(this.AUTH_TOKEN_NAME);
-  }
-
   getAuthToken(): string {
     return this.cookieService.get(this.AUTH_TOKEN_NAME);
   }
 
   signOut() {
+    const authToken = this.getAuthToken();
     this.cookieService.delete(this.AUTH_TOKEN_NAME, '/');
+    const header = {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${authToken}`)
+    }
+    return this.httpClient.post<void>(`${environment.apiUrl}/auth/signOut`, {}, header)
   }
 }

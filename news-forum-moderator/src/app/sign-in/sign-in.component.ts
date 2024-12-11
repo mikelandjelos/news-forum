@@ -1,3 +1,4 @@
+import { Seconds } from './../models/global-types';
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
@@ -50,6 +51,10 @@ export class SignInComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    if (this.authService.getAuthToken()) {
+      this.toastr.success(`Welcome back!`);
+      this.router.navigate(['/moderator-hub', 'profile-page']);
+    }
     this.buildForm();
   }
 
@@ -82,28 +87,30 @@ export class SignInComponent implements OnInit, OnDestroy {
 
       this.signInForm.reset();
 
+      const tokenExpirationTime: Seconds = 24 * 60 * 60; // 1 day in secodns/
+
       this.authService
-        .signIn(username, password, 7 * 24 * 60 * 60)
+        .signIn(username, password, tokenExpirationTime)
         .pipe(
           takeUntil(this.onDestroy$),
           switchMap(({ accessToken, expiresIn }) =>
             this.authService.getProfile()
           )
         )
-        .subscribe(
-          ({ exp, iat, ...moderator }) => {
+        .subscribe({
+          next: ({ exp, iat, ...moderator }) => {
             this.toastr.success(
               `Welcome ${moderator.firstName} ${moderator.lastName} (${moderator.username})!`,
               'Success'
             );
-            this.router.navigate(['moderator-hub']);
+            this.router.navigate(['/moderator-hub', 'profile-page']);
           },
-          (err) => {
+          error: (err) => {
             const { message, error, statusCode } = err.error;
             this.toastr.error(message, 'Error');
             console.log(`Error: "${error}"; StatusCode: ${statusCode}`);
-          }
-        );
+          },
+        });
     }
   }
 }

@@ -4,6 +4,8 @@ import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ModeratorsModule } from 'src/moderators/moderators.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MiscellaneousModule } from 'src/miscellaneous/miscellaneous.module';
+import { BlacklistingService } from 'src/miscellaneous/blacklist.service';
 
 @Module({
   imports: [
@@ -17,9 +19,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
     }),
     ModeratorsModule,
+    MiscellaneousModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, BlacklistingService],
   exports: [AuthService],
 })
 export class AuthModule {}

@@ -19,8 +19,7 @@ export const routes: Routes = [
         component: ArticlesContainerComponent,
       },
       { path: 'profile-page', component: ProfilePageComponent },
-      { path: '', redirectTo: 'profile-page', pathMatch: 'full' },
     ],
   },
-  { path: '', pathMatch: 'full', redirectTo: 'moderator-hub' },
+  { path: '', pathMatch: 'full', redirectTo: '/sign-in' },
 ];

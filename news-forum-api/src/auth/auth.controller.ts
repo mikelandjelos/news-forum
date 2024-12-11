@@ -10,9 +10,10 @@ import {
   Request,
   Query,
   ParseIntPipe,
+  BadRequestException,
 } from '@nestjs/common';
 import { SignInDto } from './dto/sign-in.dto';
-import { AuthGuard } from './auth.guard';
+import { JwtGuard } from './jwt.guard';
 import { Moderator } from 'src/moderators/entities/moderator.entity';
 
 @Controller('auth')
@@ -32,9 +33,22 @@ export class AuthController {
     );
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtGuard)
   @Get('profile')
   getProfile(@Request() req): Moderator & { iat: number; exp: number } {
     return req.user;
+  }
+
+  @UseGuards(JwtGuard)
+  @Post('signOut')
+  async signOut(@Request() req): Promise<void> {
+    const token: string = req.headers.authorization?.split(' ')[1];
+
+    const tokenExpirationTimestamp = req.user.exp;
+    if (!tokenExpirationTimestamp) {
+      throw new BadRequestException(`No expiration timestamp found for token!`);
+    }
+
+    this.authService.signOut(token, tokenExpirationTimestamp);
   }
 }
