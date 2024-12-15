@@ -8,12 +8,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { AutoFocusModule } from 'primeng/autofocus';
+import { TooltipModule } from 'primeng/tooltip';
 
 const Error = {
   username: {
@@ -35,6 +36,7 @@ const Error = {
     RouterLink,
     ToastrModule,
     InputTextModule,
+    TooltipModule,
     AutoFocusModule,
   ],
   templateUrl: './sign-in.component.html',

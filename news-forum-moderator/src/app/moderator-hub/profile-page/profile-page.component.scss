@@ -1,0 +1,39 @@
+@layer reset, primeng;
+
+@layer reset {
+  .content-center {
+    text-align: center;
+  }
+
+  .centered {
+    min-height: 95vh;
+  }
+
+  .image-container {
+    position: relative;
+    display: inline-block;
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .upload-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, shareReplay, tap } from 'rxjs';
+import { defer, delay, Observable, shareReplay, tap } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
@@ -42,9 +42,11 @@ export class AuthService {
   }
 
   getProfile(): Observable<Moderator & { iat: number; exp: number }> {
-    return this.httpClient.get<Moderator & { iat: number; exp: number }>(
-      `${environment.apiUrl}/auth/profile`
-    );
+    return this.httpClient
+      .get<Moderator & { iat: number; exp: number }>(
+        `${environment.apiUrl}/auth/profile`
+      )
+      .pipe(shareReplay(2), delay(1000));
   }
 
   getAuthToken(): string {
@@ -55,8 +57,12 @@ export class AuthService {
     const authToken = this.getAuthToken();
     this.cookieService.delete(this.AUTH_TOKEN_NAME, '/');
     const header = {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${authToken}`)
-    }
-    return this.httpClient.post<void>(`${environment.apiUrl}/auth/signOut`, {}, header)
+      headers: new HttpHeaders().set('Authorization', `Bearer ${authToken}`),
+    };
+    return this.httpClient.post<void>(
+      `${environment.apiUrl}/auth/signOut`,
+      {},
+      header
+    );
   }
 }

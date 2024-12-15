@@ -2,7 +2,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { SideNavigationComponent } from '../side-navigation/side-navigation.component';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -31,7 +31,7 @@ import { SpeedDialModule } from 'primeng/speeddial';
 })
 export class TopMenuComponent {
   @ViewChild('sideNavigation') sideNavigation!: SideNavigationComponent;
-  private onDestroy$ = new Subject<void>();
+
   items: MenuItem[] = [
     {
       tooltip: 'Articles',
@@ -41,26 +41,23 @@ export class TopMenuComponent {
         items: [
           {
             icon: 'pi pi-file-edit',
+            tooltip: 'Drafts',
             command: () => {
-              this.router.navigate(['/moderator-hub', 'articles', 'drafts'])
+              this.router.navigate(['/moderator-hub', 'articles', 'drafts']);
             },
           },
           {
             icon: 'pi pi-file-check',
+            tooltip: 'Posts',
             command: () => {
-              this.router.navigate(['/moderator-hub', 'articles', 'posts'])
+              this.router.navigate(['/moderator-hub', 'articles', 'posts']);
             },
           },
           {
             icon: 'pi pi-file-excel',
+            tooltip: 'Archives',
             command: () => {
-              this.router.navigate(['/moderator-hub', 'articles', 'archives'])
-            },
-          },
-          {
-            icon: 'pi pi-bookmark',
-            command: () => {
-              this.router.navigate(['/moderator-hub', 'articles', 'bookmarks'])
+              this.router.navigate(['/moderator-hub', 'articles', 'archives']);
             },
           },
         ],
@@ -75,7 +72,7 @@ export class TopMenuComponent {
       icon: 'pi-plus',
       tooltip: 'Create New Draft',
       command: () => {
-        this.toastr.success('New item created');
+        this.toastr.success('TODO: Create New Draft');
       },
     },
     {
@@ -84,6 +81,8 @@ export class TopMenuComponent {
       tooltip: 'Toggle Side Navigation',
     },
   ];
+
+  private onDestroy$ = new Subject<void>();
 
   constructor(
     private readonly authService: AuthService,
@@ -95,17 +94,5 @@ export class TopMenuComponent {
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();
-  }
-
-  signOut(): void {
-    this.authService
-      .signOut()
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe({
-        next: (_) => {
-          this.toastrService.info('Successfully signed out!', 'Info');
-          this.router.navigate(['/sign-in']);
-        },
-      });
   }
 }

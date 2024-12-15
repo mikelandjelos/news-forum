@@ -1,1 +1,51 @@
-<h1>PROFILE-PAGE</h1>
+<div class="card flex justify-content-center align-items-center centered">
+  <div *ngIf="moderator$ | async as moderator; else loading">
+    <p-card
+      [header]="moderator.firstName + ' ' + moderator.lastName"
+      [subheader]="moderator.username + ' (' + moderator.email + ')'"
+      [style]="{ width: '360px' }"
+    >
+      <ng-template pTemplate="header">
+        <div class="card flex justify-content-center">
+          <p-image
+            src="assets/profile.png"
+            previewImageSrc="assets/profile.png"
+            alt="Image"
+            [preview]="true"
+          />
+        </div>
+      </ng-template>
+      <ng-template pTemplate="content">
+        <p>Add description.</p>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <div class="flex gap-3 mt-1">
+          <p-button
+            label="Edit info"
+            icon="pi pi-user-edit"
+            severity="primary"
+            [outlined]="true"
+            [raised]="true"
+            class="w-full"
+            styleClass="w-full"
+            (onClick)="editInfo()"
+          />
+          <p-button
+            label="Log out"
+            icon="pi pi-sign-out"
+            severity="secondary"
+            [outlined]="true"
+            [raised]="true"
+            pTooltip=""
+            class="w-full"
+            styleClass="w-full"
+            (onClick)="signOut()"
+          />
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+  <ng-template #loading>
+    <p-progressSpinner animationDuration="1s" />
+  </ng-template>
+</div>
