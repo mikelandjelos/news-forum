@@ -4,9 +4,14 @@ import { ModeratorsController } from './moderators.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Moderator } from './entities/moderator.entity';
 import { JwtModule } from '@nestjs/jwt';
+import { MiscellaneousModule } from 'src/miscellaneous/miscellaneous.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Moderator]), JwtModule],
+  imports: [
+    TypeOrmModule.forFeature([Moderator]),
+    JwtModule,
+    MiscellaneousModule,
+  ],
   controllers: [ModeratorsController],
   providers: [ModeratorsService],
   exports: [ModeratorsService],

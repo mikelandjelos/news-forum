@@ -1,0 +1,27 @@
+:host ::ng-deep {
+  .dock-window {
+    height: auto;
+    width: auto;
+    position: fixed;
+    top: 50%; /* Align to the vertical center */
+    right: 0; /* Dock to the right edge */
+    transform: translateY(-50%); /* Offset to truly center vertically */
+    overflow: visible !important;
+  }
+
+  .p-dock {
+    z-index: 1000;
+  }
+
+  .p-speeddial {
+    font-size: 16px;
+    position: absolute;
+    right: 0;
+    z-index: 9999;
+    transform: translateY(-50%); /* Center vertically */
+  }
+
+  .p-element {
+    overflow: visible;
+  }
+}

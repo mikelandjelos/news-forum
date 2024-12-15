@@ -11,6 +11,8 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { InputTextModule } from 'primeng/inputtext';
+import { AutoFocusModule } from 'primeng/autofocus';
 
 const Error = {
   username: { pattern: 'Username required' },
@@ -31,6 +33,8 @@ const Error = {
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
+    InputTextModule,
+    AutoFocusModule,
   ],
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],

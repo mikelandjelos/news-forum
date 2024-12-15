@@ -1,0 +1,32 @@
+<div class="dock-window">
+  <p-dock [model]="items" [position]="'right'">
+    <ng-template pTemplate="item" let-item>
+      <div
+        style="overflow: visible"
+        *ngIf="item.state !== undefined; else other_content"
+      >
+        <p-speedDial
+          [showIcon]="item.state.showIcon"
+          [hideIcon]="item.state.hideIcon"
+          [model]="item.state.items"
+          [pTooltip]="item.tooltip"
+          tooltipPosition="left"
+          direction="left"
+          buttonClassName="p-button-secondary p-button-outlined p-button-raised p-button-sm"
+        />
+      </div>
+      <ng-template #other_content>
+        <p-button
+          [icon]="'pi ' + item.icon"
+          [rounded]="true"
+          [outlined]="true"
+          [raised]="true"
+          [pTooltip]="item.tooltip"
+          tooltipPosition="left"
+          severity="secondary"
+        />
+      </ng-template>
+    </ng-template>
+  </p-dock>
+</div>
+<app-side-navigation #sideNavigation></app-side-navigation>
