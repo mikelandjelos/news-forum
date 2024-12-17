@@ -8,6 +8,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { provideStore } from '@ngrx/store';
+import { appState } from './state/app.state';
+import { provideEffects } from '@ngrx/effects';
+import * as signUpEffects from './state/sign-up/sign-up.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,6 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([authInterceptor])),
     provideAnimationsAsync(),
     provideToastr(),
-    provideStore(),
+    provideStore(appState),
+    provideEffects(signUpEffects),
   ],
 };

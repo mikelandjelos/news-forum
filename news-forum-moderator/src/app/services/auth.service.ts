@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment.development';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Moderator } from '../models/moderator.model';
-import { Seconds } from '../models/global-types';
+import { Seconds } from '../models/global.types';
 
 @Injectable({
   providedIn: 'root',

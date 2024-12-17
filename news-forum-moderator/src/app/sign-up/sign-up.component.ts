@@ -8,11 +8,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
-import { Router, RouterLink } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { RouterLink } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { AutoFocusModule } from 'primeng/autofocus';
+import { AppState } from '../state/app.state';
+import { Store } from '@ngrx/store';
+import { SignUpActions } from '../state/sign-up/sign-up.actions';
 
 const Error = {
   username: { pattern: 'Username required' },
@@ -45,11 +47,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   signUpForm!: FormGroup;
   private onDestroy$ = new Subject<void>();
 
-  constructor(
-    private moderatorService: ModeratorService,
-    private router: Router,
-    private toastr: ToastrService
-  ) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit() {
     this.buildForm();
@@ -77,7 +75,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
     if (!this.signUpForm.valid) {
       this.errMsg = [];
 
-      // Check each field for errors
       const fields = [
         'firstName',
         'lastName',
@@ -94,7 +91,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
         }
       });
 
-      // Check for matching passwords
       if (
         this.signUpForm.get('password')?.value !==
         this.signUpForm.get('repeatPassword')?.value
@@ -105,17 +101,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       this.errMsg = [];
       const { repeatPassword, ...moderator } = this.signUpForm.value;
 
-      this.moderatorService
-        .create(moderator)
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe((moderator) => {
-          this.toastr.success(
-            `Successfully signed-up as ${moderator.username}! Now, please sign-in with your credentials`,
-            'Success'
-          );
-          this.router.navigate(['/sign-in']);
-        });
-
+      this.store.dispatch(SignUpActions.signUp({ moderator }));
       this.signUpForm.reset();
     }
   }

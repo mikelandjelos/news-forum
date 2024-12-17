@@ -1,4 +1,4 @@
-import { Seconds } from './../models/global-types';
+import { Seconds } from '../models/global.types';
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
