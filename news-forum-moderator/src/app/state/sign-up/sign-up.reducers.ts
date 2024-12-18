@@ -1,16 +1,16 @@
 import { SignUpActions } from './sign-up.actions';
 import { createReducer, on } from '@ngrx/store';
-import { Status } from '../global.types';
+import { Status } from '../app.types';
 import { SignUpState } from './sign-up.state';
 
-export const initialState: SignUpState = {
+export const initialSignUpState: SignUpState = {
   createdModerator: null,
   error: null,
   status: null,
 };
 
 export const signUpReducer = createReducer(
-  initialState,
+  initialSignUpState,
   on(SignUpActions.signUp, (state, { moderator }) => ({
     ...state,
     status: 'pending' as Status,

@@ -8,13 +8,16 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Subject, switchMap, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { TooltipModule } from 'primeng/tooltip';
+import { Store } from '@ngrx/store';
+import { AppState } from '../state/app.state';
+import { SignInActions } from '../state/auth/sign-in/sign-in.actions';
 
 const Error = {
   username: {
@@ -53,7 +56,8 @@ export class SignInComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
@@ -93,30 +97,15 @@ export class SignInComponent implements OnInit, OnDestroy {
 
       this.signInForm.reset();
 
-      const tokenExpirationTime: Seconds = 24 * 60 * 60; // 1 day in secodns/
+      const tokenExpirationTime: Seconds = 24 * 60 * 60; // 1 day in seconds.
 
-      this.authService
-        .signIn(username, password, tokenExpirationTime)
-        .pipe(
-          takeUntil(this.onDestroy$),
-          switchMap(({ accessToken, expiresIn }) =>
-            this.authService.getProfile()
-          )
-        )
-        .subscribe({
-          next: ({ exp, iat, ...moderator }) => {
-            this.toastr.success(
-              `Welcome ${moderator.firstName} ${moderator.lastName} (${moderator.username})!`,
-              'Success'
-            );
-            this.router.navigate(['/moderator-hub', 'profile-page']);
-          },
-          error: (err) => {
-            const { message, error, statusCode } = err.error;
-            this.toastr.error(message, 'Error');
-            console.log(`Error: "${error}"; StatusCode: ${statusCode}`);
-          },
-        });
+      this.store.dispatch(
+        SignInActions.signIn({
+          username,
+          password,
+          expiresIn: tokenExpirationTime,
+        })
+      );
     }
   }
 }

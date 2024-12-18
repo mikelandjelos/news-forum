@@ -1,10 +1,7 @@
-import { signUpReducer } from './sign-up/sign-up.reducers';
+import { AuthState } from './auth/auth.state';
 import { SignUpState } from './sign-up/sign-up.state';
 
 export interface AppState {
   signUp: SignUpState;
+  auth: AuthState;
 }
-
-export const appState = {
-  signUp: signUpReducer,
-};

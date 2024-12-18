@@ -1,5 +1,5 @@
 import { Moderator } from "../../models/moderator.model";
-import { Status } from "../global.types";
+import { Status } from "../app.types";
 
 export interface SignUpState {
   createdModerator: Moderator | null;

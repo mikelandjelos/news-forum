@@ -37,6 +37,11 @@ export class ModeratorsController {
     return await this.moderatorsService.findOneByUsername(username);
   }
 
+  @Get('/email/:email')
+  async findOneByEmail(@Param('email') email: string) {
+    return await this.moderatorsService.findOneByEmail(email);
+  }
+
   @UseGuards(JwtGuard)
   @Patch(':id')
   async update(

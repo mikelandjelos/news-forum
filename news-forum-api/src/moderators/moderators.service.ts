@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Moderator } from './entities/moderator.entity';
 import { hash } from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,6 +16,17 @@ export class ModeratorsService {
   async create(createModeratorDto: CreateModeratorDto): Promise<Moderator> {
     const moderator: Moderator = { id: undefined, ...createModeratorDto };
     moderator.password = await hash(createModeratorDto.password, 10);
+
+    if (await this.findOneByUsername(moderator.username))
+      throw new BadRequestException(
+        'Moderator with that username already exists!',
+      );
+
+    if (await this.findOneByEmail(moderator.email))
+      throw new BadRequestException(
+        'Moderator with that email already exists!',
+      );
+
     return await this.moderatorRepository.save(moderator);
   }
 
@@ -29,6 +40,10 @@ export class ModeratorsService {
 
   async findOneByUsername(username: string) {
     return await this.moderatorRepository.findOneBy({ username });
+  }
+
+  async findOneByEmail(email: string) {
+    return await this.moderatorRepository.findOneBy({ email });
   }
 
   async update(

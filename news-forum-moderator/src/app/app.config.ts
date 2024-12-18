@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -8,9 +8,10 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { provideStore } from '@ngrx/store';
-import { appState } from './state/app.state';
 import { provideEffects } from '@ngrx/effects';
-import * as signUpEffects from './state/sign-up/sign-up.effects';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { appEffects } from './state/app.effects';
+import { reducerMap } from './state/app.reducers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,7 +19,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([authInterceptor])),
     provideAnimationsAsync(),
     provideToastr(),
-    provideStore(appState),
-    provideEffects(signUpEffects),
+    provideStore(reducerMap),
+    provideEffects(appEffects),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],
 };
