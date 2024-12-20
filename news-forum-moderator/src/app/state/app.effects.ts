@@ -8,6 +8,7 @@ import * as signUpEffects from './sign-up/sign-up.effects';
 import * as signInEffects from './auth/sign-in/sign-in.effects';
 import * as profileEffects from './auth/profile/profile.effects';
 import * as signOutEffects from './auth/sign-out/sign-out.effects';
+import * as moderatorEffects from './moderator/moderator.effects';
 
 export const appFailureEffect = createEffect(
   (actions$ = inject(Actions), toastrService = inject(ToastrService)) =>
@@ -25,5 +26,6 @@ export const appEffects = [
   signInEffects,
   profileEffects,
   signOutEffects,
+  moderatorEffects,
   { appFailureEffect },
 ];

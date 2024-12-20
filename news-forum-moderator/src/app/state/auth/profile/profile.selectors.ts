@@ -2,7 +2,12 @@ import { createSelector } from '@ngrx/store';
 import { selectAuthProfile } from '../auth.selectors';
 import { ProfileState } from './profile.state';
 
-export const selectAuthProfileModerator = createSelector(
+export const selectAuthProfileUsername = createSelector(
   selectAuthProfile,
-  (state: ProfileState) => state.moderator
+  (state: ProfileState) => state.username
+);
+
+export const selectAuthProfileId = createSelector(
+  selectAuthProfile,
+  (state: ProfileState) => state.id
 );

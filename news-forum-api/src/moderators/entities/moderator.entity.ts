@@ -27,4 +27,7 @@ export class Moderator {
 
   @Column({ type: 'enum', enum: ['m', 'f'] })
   gender: string;
+
+  @Column({ type: 'text', nullable: true })
+  description?: string;
 }

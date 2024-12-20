@@ -31,10 +31,18 @@ export class AuthService {
     );
   }
 
-  getProfile(): Observable<Moderator & { iat: number; exp: number }> {
-    return this.httpClient.get<Moderator & { iat: number; exp: number }>(
-      `${environment.apiUrl}/auth/profile`
-    );
+  getProfile(): Observable<{
+    id: string;
+    username: string;
+    iat: number;
+    exp: number;
+  }> {
+    return this.httpClient.get<{
+      id: string;
+      username: string;
+      iat: number;
+      exp: number;
+    }>(`${environment.apiUrl}/auth/profile`);
   }
 
   getAuthToken(): string {

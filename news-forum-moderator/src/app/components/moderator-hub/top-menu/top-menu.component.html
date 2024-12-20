@@ -2,7 +2,6 @@
   <p-dock [model]="items" [position]="'right'">
     <ng-template pTemplate="item" let-item>
       <div
-        style="overflow: visible"
         *ngIf="item.state !== undefined; else other_content"
       >
         <p-speedDial

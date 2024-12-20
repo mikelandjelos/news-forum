@@ -1,4 +1,4 @@
-import { ModeratorService } from './../services/moderator.service';
+import { ModeratorService } from '../../services/moderator.service';
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
@@ -12,9 +12,9 @@ import { Subject } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { AutoFocusModule } from 'primeng/autofocus';
-import { AppState } from '../state/app.state';
+import { AppState } from '../../state/app.state';
 import { Store } from '@ngrx/store';
-import { SignUpActions } from '../state/sign-up/sign-up.actions';
+import { SignUpActions } from '../../state/sign-up/sign-up.actions';
 
 const Error = {
   username: { pattern: 'Username required' },

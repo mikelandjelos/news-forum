@@ -1,0 +1,40 @@
+.p-fluid {
+  display: flex;
+  flex-direction: column;
+}
+
+.p-field {
+  margin-bottom: 1.5rem; /* Adds space between each form group */
+}
+
+.p-field label {
+  margin-bottom: 0.5rem; /* Adds space between label and input */
+  display: block;
+}
+
+.p-field input,
+.p-field p-radioButton {
+  width: 100%; /* Ensure inputs take full width of their container */
+}
+
+.p-field p-radioButton {
+  margin-right: 1rem; /* Adds space between radio buttons */
+}
+
+.p-d-flex {
+  display: flex;
+  align-items: center;
+}
+
+.p-field p-radioButton + p-radioButton {
+  margin-left: 1rem; /* Adds space between radio buttons */
+}
+
+.p-error {
+  color: red;
+  font-size: 0.875rem;
+}
+
+button {
+  width: 100%; /* Makes the button span the entire width */
+}

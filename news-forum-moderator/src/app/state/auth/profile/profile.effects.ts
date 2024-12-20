@@ -1,12 +1,13 @@
 import { inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, from, map, switchMap, tap } from 'rxjs';
+import { catchError, from, map, of, switchMap, tap } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import { appFailureAction } from '../../app.actions';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ProfileActions } from './profile.actions';
 import { HttpStatusCode } from '@angular/common/http';
+import { ModeratorActions } from '../../moderator/moderator.actions';
 
 export const checkIfAuthenticatedEffect = createEffect(
   (
@@ -18,8 +19,8 @@ export const checkIfAuthenticatedEffect = createEffect(
       ofType(ProfileActions.checkIfAuthenticated),
       switchMap((_) =>
         authService.getProfile().pipe(
-          map(({ iat, exp, ...moderator }) =>
-            ProfileActions.authenticated({ moderator })
+          map(({ id, username, ..._ }) =>
+            ProfileActions.authenticated({ id, username })
           ),
           catchError((error) => {
             if (error.status == HttpStatusCode.Unauthorized) {
@@ -47,13 +48,14 @@ export const authenticatedEffect = createEffect(
   ) =>
     actions$.pipe(
       ofType(ProfileActions.authenticated),
-      tap(({ moderator }) => {
+      tap(({ id, username }) => {
         toastrService.info(
-          `Nice to see you again ${moderator.firstName}!`,
+          `Nice to see you again ${username}!`,
           'Welcome back!'
         );
         router.navigate(['/moderator-hub', 'profile-page']);
-      })
+      }),
+      map(({ id, username }) => ModeratorActions.read({ id }))
     ),
-  { functional: true, dispatch: false }
+  { functional: true }
 );

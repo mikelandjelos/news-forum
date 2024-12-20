@@ -1,7 +1,7 @@
-import { Moderator } from "../../../models/moderator.model";
 import { Status } from "../../app.types";
 
 export interface ProfileState {
-  moderator: Moderator | null;
+  id: string | null;
+  username: string | null;
   status: Status | null;
 }

@@ -16,4 +16,17 @@ export class ModeratorService {
       moderator
     );
   }
+
+  readById(id: string): Observable<Moderator> {
+    return this.httpClient.get<Moderator>(
+      `${environment.apiUrl}/moderators/id/${encodeURIComponent(id)}`
+    );
+  }
+
+  update(id: string, updatedModerator: Partial<Omit<Moderator, 'password'>>) {
+    return this.httpClient.patch<Moderator>(
+      `${environment.apiUrl}/moderators/${encodeURIComponent(id)}`,
+      updatedModerator
+    );
+  }
 }

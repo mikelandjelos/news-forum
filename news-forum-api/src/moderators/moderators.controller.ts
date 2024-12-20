@@ -32,12 +32,12 @@ export class ModeratorsController {
     return await this.moderatorsService.findOneById(id);
   }
 
-  @Get('/username/:username')
+  @Get('username/:username')
   async findOneByUsername(@Param('username') username: string) {
     return await this.moderatorsService.findOneByUsername(username);
   }
 
-  @Get('/email/:email')
+  @Get('email/:email')
   async findOneByEmail(@Param('email') email: string) {
     return await this.moderatorsService.findOneByEmail(email);
   }

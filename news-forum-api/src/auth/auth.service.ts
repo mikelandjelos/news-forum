@@ -33,7 +33,8 @@ export class AuthService {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...payload } = moderator;
+    const { id, ..._ } = moderator;
+    const payload = { id, username };
 
     return {
       accessToken: await this.jwtService.signAsync(payload, {

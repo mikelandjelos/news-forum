@@ -4,7 +4,8 @@ import { Status } from '../../app.types';
 import { ProfileActions } from './profile.actions';
 
 export const initialProfileState: ProfileState = {
-  moderator: null,
+  id: null,
+  username: null,
   status: null,
 };
 
@@ -14,9 +15,10 @@ export const profileReducer = createReducer(
     ...state,
     status: 'pending' as Status,
   })),
-  on(ProfileActions.authenticated, (state, { moderator }) => ({
+  on(ProfileActions.authenticated, (state, { id, username }) => ({
     ...state,
-    moderator,
+    id,
+    username,
     status: 'success' as Status,
   })),
   on(ProfileActions.notAuthenticated, (state, { error }) => ({

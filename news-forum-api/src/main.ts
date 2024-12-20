@@ -7,7 +7,7 @@ async function bootstrap() {
   // Enable CORS
   app.enableCors({
     origin: ['http://localhost:4200'], // Your Angular app's origin
-    methods: 'GET,POST,PUT,DELETE,OPTIONS',
+    methods: 'GET,POST,PUT,DELETE,OPTIONS,PATCH',
     allowedHeaders: 'Content-Type, Authorization',
     credentials: true, // If you are using cookies or authentication headers
   });

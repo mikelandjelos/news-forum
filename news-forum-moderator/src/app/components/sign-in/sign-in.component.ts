@@ -1,4 +1,4 @@
-import { Seconds } from '../models/global.types';
+import { Seconds } from '../../models/global.types';
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
@@ -11,13 +11,13 @@ import {
 import { Subject } from 'rxjs';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { TooltipModule } from 'primeng/tooltip';
 import { Store } from '@ngrx/store';
-import { AppState } from '../state/app.state';
-import { SignInActions } from '../state/auth/sign-in/sign-in.actions';
+import { AppState } from '../../state/app.state';
+import { SignInActions } from '../../state/auth/sign-in/sign-in.actions';
 
 const Error = {
   username: {

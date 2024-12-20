@@ -26,7 +26,7 @@ export class JwtGuard implements CanActivate {
       secret: process.env.JWT_SECRET,
     });
 
-    request.user = payload;
+    request.profile = payload;
 
     if (await this.blacklistingService.isTokenBlacklisted(token)) {
       return false;

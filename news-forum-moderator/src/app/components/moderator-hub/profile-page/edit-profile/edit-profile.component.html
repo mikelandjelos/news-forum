@@ -1,0 +1,116 @@
+<form [formGroup]="editProfileForm" (ngSubmit)="saveChanges()">
+  <div class="p-fluid">
+    <div class="p-field">
+      <label for="firstName" class="spaced">First Name</label>
+      <input
+        id="firstName"
+        pInputText
+        type="text"
+        formControlName="firstName"
+        required
+      />
+      <div
+        *ngIf="
+          editProfileForm.get('firstName')?.invalid &&
+          editProfileForm.get('firstName')?.touched
+        "
+      >
+        <small class="p-error">First Name is required.</small>
+      </div>
+    </div>
+
+    <div class="p-field">
+      <label for="lastName">Last Name</label>
+      <input
+        id="lastName"
+        pInputText
+        type="text"
+        formControlName="lastName"
+        required
+      />
+      <div
+        *ngIf="
+          editProfileForm.get('lastName')?.invalid &&
+          editProfileForm.get('lastName')?.touched
+        "
+      >
+        <small class="p-error">Last Name is required.</small>
+      </div>
+    </div>
+
+    <div class="p-field">
+      <label for="email">Email</label>
+      <input
+        id="email"
+        pInputText
+        type="email"
+        formControlName="email"
+        required
+      />
+      <div
+        *ngIf="
+          editProfileForm.get('email')?.invalid &&
+          editProfileForm.get('email')?.touched
+        "
+      >
+        <small class="p-error">Please enter a valid email address.</small>
+      </div>
+    </div>
+
+    <div class="p-field">
+      <label for="age">Age</label>
+      <input
+        id="age"
+        pInputText
+        type="number"
+        formControlName="age"
+        required
+        min="0"
+      />
+      <div
+        *ngIf="
+          editProfileForm.get('age')?.invalid &&
+          editProfileForm.get('age')?.touched
+        "
+      >
+        <small class="p-error">Age must be a positive number.</small>
+      </div>
+    </div>
+
+    <div class="p-field">
+      <label for="gender">Gender</label>
+      <div class="p-d-flex p-ai-center">
+        <p-radioButton
+          formControlName="gender"
+          name="gender"
+          value="m"
+          label="Male"
+        ></p-radioButton>
+        <p-radioButton
+          formControlName="gender"
+          name="gender"
+          value="f"
+          label="Female"
+        ></p-radioButton>
+      </div>
+      <div
+        *ngIf="
+          editProfileForm.get('gender')?.invalid &&
+          editProfileForm.get('gender')?.touched
+        "
+      >
+        <small class="p-error">Gender is required.</small>
+      </div>
+    </div>
+
+    <div class="p-d-flex p-jc-between">
+      <button
+        type="submit"
+        pButton
+        label="Save Changes"
+        [disabled]="editProfileForm.invalid"
+        class="p-button-primary"
+      ></button>
+    </div>
+  </div>
+</form>

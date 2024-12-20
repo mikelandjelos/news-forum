@@ -14,7 +14,6 @@ import {
 } from '@nestjs/common';
 import { SignInDto } from './dto/sign-in.dto';
 import { JwtGuard } from './jwt.guard';
-import { Moderator } from 'src/moderators/entities/moderator.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -35,8 +34,13 @@ export class AuthController {
 
   @UseGuards(JwtGuard)
   @Get('profile')
-  getProfile(@Request() req): Moderator & { iat: number; exp: number } {
-    return req.user;
+  getProfile(@Request() req): {
+    id: string;
+    username: string;
+    iat: number;
+    exp: number;
+  } {
+    return req.profile;
   }
 
   @UseGuards(JwtGuard)
@@ -44,7 +48,7 @@ export class AuthController {
   async signOut(@Request() req): Promise<void> {
     const token: string = req.headers.authorization?.split(' ')[1];
 
-    const tokenExpirationTimestamp = req.user.exp;
+    const tokenExpirationTimestamp = req.profile.exp;
     if (!tokenExpirationTimestamp) {
       throw new BadRequestException(`No expiration timestamp found for token!`);
     }
